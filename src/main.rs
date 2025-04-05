@@ -1,22 +1,8 @@
-use std::io::{self,Read};
-use crossterm::terminal::{enable_raw_mode,disable_raw_mode};
+#![warn(clippy::all, clippy::pedantic)]
+mod editor;
+use editor::Editor;
+
 fn main() {
-    match enable_raw_mode() {
-        Ok(()) => println!("Raw mode Enalbed"),
-        Err(e) => {
-            eprintln!("Failed to enable raw mode: {}", e);
-            return;
-        }
-    }
-    for i in io::stdin().bytes(){
-        let c = i.unwrap() as char;
-        println!("{}",c);
-        if c == 'q' {
-            if let Err(e) = disable_raw_mode() {
-                eprintln!("Error disabling raw mode: {}", e);
-            }
-            break;
-        }
-    }
-    
+    let editor = Editor::default();             
+    editor.run();
 }
